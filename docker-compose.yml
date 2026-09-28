@@ -42,9 +42,8 @@ x-airflow-common: &airflow-common
 
   volumes:
     - dags-volume:/opt/airflow/dags_repo
-    - ./logs:/opt/airflow/logs
-    - ./plugins:/opt/airflow/plugins
-    - ./config:/opt/airflow/config:ro
+    - airflow-logs:/opt/airflow/logs
+    - airflow-plugins:/opt/airflow/plugins
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on: &airflow-common-depends-on
     postgres:
@@ -164,3 +163,5 @@ services:
 volumes:
   postgres-db-volume:
   dags-volume:
+  airflow-logs:
+  airflow-plugins:
