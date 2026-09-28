@@ -20,6 +20,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: '120'
     AIRFLOW__SCHEDULER__SCHEDULER_HEARTBEAT_SEC: '15'
 
+
     # --- webserver: single gunicorn worker, no autoreload ---
     AIRFLOW__WEBSERVER__WORKERS: 1
     AIRFLOW__WEBSERVER__WORKER_REFRESH_BATCH_SIZE: 1
@@ -31,6 +32,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__ELASTICSEARCH__JSON_FORMAT: 'false'
 
     # --- misc trims ---
+    AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags_repo/current/dags
     AIRFLOW__CORE__DAGBAG_IMPORT_TIMEOUT: '60'
     AIRFLOW__CORE__CHECK_SLAS: 'false'
     AIRFLOW__METRICS__STATSD_ON: 'false'
@@ -39,7 +41,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
 
   volumes:
-    - ${DAGS_HOST_PATH}:/opt/airflow/dags
+    - dags-volume:/opt/airflow/dags_repo
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
     - ./config:/opt/airflow/config:ro
@@ -148,24 +150,17 @@ services:
         reservations:
           memory: 768M
 
-  caddy:
-    image: caddy:2-alpine
-    profiles: ["production"]
-    container_name: caddy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
+  git-sync:
+    image: registry.k8s.io/git-sync/git-sync:v4.2.4
+    environment:
+      - GITSYNC_REPO=https://github.com/rahimcc/Turyan-Airflow-DAGs.git
+      - GITSYNC_REF=main
+      - GITSYNC_PERIOD=60s
+      - GITSYNC_ROOT=/git
+      - GITSYNC_LINK=current
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy-data:/data
-      - caddy-config:/config
-    depends_on:
-       airflow-webserver:
-        condition: service_healthy
-          
+      - dags-volume:/git
 
 volumes:
   postgres-db-volume:
-  caddy-data: {}
-  caddy-config: {}
+  dags-volume:
