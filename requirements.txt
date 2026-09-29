@@ -4,14 +4,11 @@ geopy
 pytest
 requests
 
-
 ## Zenquote 
 numpy
-
 ## Test
 ruff
 boto3
-apache-airflow==3.0.6
 ruff
 boto3
 pandas
