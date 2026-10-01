@@ -1,5 +1,6 @@
 requests
 apache-airflow-providers-common-io
+apache-airflow-providers-standard
 geopy
 pytest
 requests
