@@ -19,6 +19,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: '60'
     AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: '120'
     AIRFLOW__SCHEDULER__SCHEDULER_HEARTBEAT_SEC: '15'
+    AIRFLOW__CORE__FERNET__KEY: "PGo6d1HWMPTyOL59GgP_ImxA8lfO_731Rm_QvnT5sw0="
 
 
     # --- webserver: single gunicorn worker, no autoreload ---
