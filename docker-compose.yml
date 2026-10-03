@@ -36,7 +36,6 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags_repo/current/dags
     AIRFLOW__CORE__DAGBAG_IMPORT_TIMEOUT: '60'
     AIRFLOW__CORE__CHECK_SLAS: 'false'
-    AIRFLOW__METRICS__STATSD_ON: 'false'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
 
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
